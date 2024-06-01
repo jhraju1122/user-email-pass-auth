@@ -7,6 +7,7 @@ const Header = () => {
      <li className="ml-[-120px] w-[200px]"><NavLink to={"/"}>Home</NavLink></li>
      <li className="ml-[-120px] w-[200px]"><NavLink to={"/login"}>Login</NavLink></li>
      <li className="ml-[-120px] w-[200px]"><NavLink to={"/register"}>Register</NavLink></li>
+     <li className="ml-[-120px] w-[200px]"><NavLink to={"/Heroregister"}>Register Hero</NavLink></li>
      
     </>
 
