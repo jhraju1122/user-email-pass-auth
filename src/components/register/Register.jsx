@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+ 
 
 const Register = () => {
     const [registerError, setRegisterError] = useState('');
     const [success, setSuccess] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleRegister = e =>{
         e.preventDefault();
@@ -12,6 +14,10 @@ const Register = () => {
   
        if(password.length <6){
         setRegisterError('password should be at least 6 characterr or longer');
+        return;
+       }
+       else if(!/A-Z/.test(password)){
+        setRegisterError('your password should have at least one upper case character.')
         return;
        }
 
@@ -39,8 +45,16 @@ const Register = () => {
             <form onSubmit={handleRegister} className='text-center'>
                 <input className='mb-4 mt-2 w-2/4' type="email" placeholder='type your email' name='email' id='' />
                 <br />
-                <input className='w-2/4' type="password" placeholder='type your password' name='password' id='' />
+
+                <input
+                 className='w-2/4' 
+                 type={ showPassword ? "text" : "password" }
+                 placeholder='type your password' 
+                 name='password' 
+                 id='' />
+                <span onClick={ ()=> setShowPassword(!showPassword)}>Show</span>
                 <br />
+
                 <input className='btn btn-secondary w-2/4 mt-4 mb-4 ' type="submit" value="Register" />
             </form>
             {
