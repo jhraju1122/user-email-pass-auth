@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
- 
+import { FaEyeSlash, FaRegEye } from "react-icons/fa6";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+
 
 const Register = () => {
     const [registerError, setRegisterError] = useState('');
@@ -16,7 +18,7 @@ const Register = () => {
         setRegisterError('password should be at least 6 characterr or longer');
         return;
        }
-       else if(!/A-Z/.test(password)){
+       else if(!/[A-Z]/.test(password)){
         setRegisterError('your password should have at least one upper case character.')
         return;
        }
@@ -24,16 +26,20 @@ const Register = () => {
     //    reset error 
     setRegisterError('');
     setSuccess('');
-      // create user
-    createUserWithEmailPassword(auth, email, password)
-    .then(result =>{
+    //   create user
+    
+
+      const auth = getAuth();
+
+      createUserWithEmailAndPassword(auth, email, password)
+      .then(result =>{
         console.log(result.user);
         setSuccess('user created successfully')
     })
     .catch(error =>{
         console.log(error);
         setRegisterError(error.message);
-    })
+    });
 
     }
 
@@ -52,7 +58,14 @@ const Register = () => {
                  placeholder='type your password' 
                  name='password' 
                  id='' />
-                <span onClick={ ()=> setShowPassword(!showPassword)}>Show</span>
+                <span onClick={ ()=> setShowPassword(!showPassword)}>
+
+                    {
+                        showPassword ?  <FaRegEye></FaRegEye> : <FaEyeSlash></FaEyeSlash>
+                    }
+                
+
+                </span>
                 <br />
 
                 <input className='btn btn-secondary w-2/4 mt-4 mb-4 ' type="submit" value="Register" />
