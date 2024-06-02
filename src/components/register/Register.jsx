@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FaEyeSlash, FaRegEye } from "react-icons/fa6";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-
+import app from '../firebase/firebase.init';
 
 const Register = () => {
     const [registerError, setRegisterError] = useState('');
@@ -12,7 +12,8 @@ const Register = () => {
         e.preventDefault();
        const email = e.target.email.value;
        const password = e.target.password.value;
-       console.log(email, password);
+       const accepted = e.target.terms.checked;
+       console.log(email, password, accepted);
   
        if(password.length <6){
         setRegisterError('password should be at least 6 characterr or longer');
@@ -22,6 +23,10 @@ const Register = () => {
         setRegisterError('your password should have at least one upper case character.')
         return;
        }
+       else if(!accepted){
+        setRegisterError('please accept our terms and conditions')
+        return;
+       }
 
     //    reset error 
     setRegisterError('');
@@ -29,8 +34,7 @@ const Register = () => {
     //   create user
     
 
-      const auth = getAuth();
-
+      const auth = getAuth(app);
       createUserWithEmailAndPassword(auth, email, password)
       .then(result =>{
         console.log(result.user);
@@ -52,13 +56,15 @@ const Register = () => {
                 <input className='mb-4 mt-2 w-2/4' type="email" placeholder='type your email' name='email' id='' />
                 <br />
 
-                <input
+               <div className='mb-4 relative '>
+               <input
                  className='w-2/4' 
                  type={ showPassword ? "text" : "password" }
                  placeholder='type your password' 
                  name='password' 
                  id='' />
-                <span onClick={ ()=> setShowPassword(!showPassword)}>
+               </div>
+                <span className='absolute top1/2 mt-[-34px] ml-28' onClick={ ()=> setShowPassword(!showPassword)}>
 
                     {
                         showPassword ?  <FaRegEye></FaRegEye> : <FaEyeSlash></FaEyeSlash>
@@ -67,6 +73,8 @@ const Register = () => {
 
                 </span>
                 <br />
+                <input type="checkbox" name="terms" id="terms" />
+                <label htmlFor="terms">Accept <a href="#">our terms and conditions</a></label> <br />
 
                 <input className='btn btn-secondary w-2/4 mt-4 mb-4 ' type="submit" value="Register" />
             </form>
